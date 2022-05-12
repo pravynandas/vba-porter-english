@@ -49,12 +49,13 @@ Private Enum msg
     NONE_ROOTPATH = 43
     INFO_FOLDER = 51
     INFO_FILE = 52
+    EXPORT_SUCCESS = 99
 End Enum
 
-private Const vbComTypeWorkBookOrSheet As Integer = 100
-private Const vbComTypeUserForm As Integer = 3
-private Const vbComTypeClass As Integer = 2
-private Const vbComTypeModule As Integer = 1
+Private Const vbComTypeWorkBookOrSheet As Integer = 100
+Private Const vbComTypeUserForm As Integer = 3
+Private Const vbComTypeClass As Integer = 2
+Private Const vbComTypeModule As Integer = 1
 
 Public Sub initialize(Optional ByVal quiet As Boolean = False)
     On Error GoTo CATCH_ERR
@@ -341,6 +342,7 @@ Private Sub exportComponent()
                     If export Then
                         com.export expath
                         updateModified expath
+                        popupMsgQuiet formatString(getMsg(EXPORT_SUCCESS), expath, com.Name)
                     End If
                 End If
             End If
@@ -774,8 +776,8 @@ Private Function popupMsg(ByVal msg As String, Optional ByVal style As VbMsgBoxS
     popupMsg = MsgBox(msg, style, "VBAPorter")
 End Function
 
-Private Sub popupMsgQuiet(ByVal msg As String, Optional ByVal style As VbMsgBoxStyle = vbOKOnly) 
-    Debug.print "[VBAPorter] " & msg
+Private Sub popupMsgQuiet(ByVal msg As String, Optional ByVal style As VbMsgBoxStyle = vbOKOnly)
+    Debug.Print "[VBAPorter] " & msg
 End Sub
 
 Private Function formatString(ByVal s As String, ParamArray args() As Variant) As String
@@ -869,8 +871,14 @@ Private Function getMsgManager() As Object
         ret.Add getMsgKey(msg.NONE_EXPORTPATH, lang.English), _
                 "The following component will be not exported because the export path is not set." & vbCrLf _
                 & vbCrLf _
-                & "Component: %s"
+                & "Component: %s" _
+                & vbCrLf
         
+        ret.Add getMsgKey(msg.EXPORT_SUCCESS, lang.English), _
+                "The following component exported successfully to path %s." & vbCrLf _
+                & "Component: %s" _
+                & vbCrLf
+
         ret.Add getMsgKey(msg.NONE_CONFIG, lang.English), _
                 "The config file is not found in ""%s""."
         
