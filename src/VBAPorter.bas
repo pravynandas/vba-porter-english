@@ -405,7 +405,7 @@ End Function
 Private Function isExportComponent(ByVal comnm As String, ByVal comtype As Variant) As Boolean
     On Error GoTo CATCH_ERR
     Debug.Print "comtype=" & comtype & ", comnm=" & comnm
-    If (comtype = vbComTypeModule Or comtype = vbComTypeClass Or comtype = vbComTypeUserForm Or comtype = vbComTypeWorkBookOrSheet) And comnm <> "main" Then isExportComponent = True
+    If (comtype = vbComTypeModule Or comtype = vbComTypeClass Or comtype = vbComTypeUserForm Or comtype = vbComTypeWorkBookOrSheet) And comnm <> "VBAPorter" Then isExportComponent = True
     Exit Function
 
 CATCH_ERR:
